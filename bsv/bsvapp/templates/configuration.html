@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	{% if messages %}
+	{% for message in messages %}
+		<div class="container">
+		<div class="alert {{ message.tags }} alert-dismissable" role="alert">
+			<button class="close" data-dismiss="alert">
+				<small><sup>x</sup></small>
+			</button>
+			{{ message }}		
+		</div>
+		</div>
+	{% endfor %}
+	{% endif %}
+<div class="container">
+<form class="form-inline my-2 my-lg-0" method="POST">
+{% csrf_token %}	
+	<div class="input-group input-group-sm mb-3">
+	  <div class="input-group-prepend">
+	    <span class="input-group-text" id="inputGroup-sizing-sm">Repository URL</span>
+	  </div>
+	  <input type="text" placeholder="https://github.com/aetna-digital-infrastructure/dfp-gitops-cluster-xxx" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" name="repository_url" size="75">
+		<button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Add</button>	
+	</form>
+	</div>
+
+{% if not all_items %}
+	<h5>No Repositories Found.</h5>
+{% endif %}
+
+{% if all_items %} 
+	<h5>Repositories</h5>
+	<div class="container">
+	<table class="table table-bordered">
+		<tr>
+			<td><center><u><b>Repository URL</b></u></center></td>
+			<td><center><u><b>Action</b></u></center></td>			
+		</tr>
+	{% for item in all_items %}	
+		<tr>
+			<td>{{ item.repository_url }}</a></td>
+			<td><center><a href="{% url 'delete_repository' item.auto_increment_id %}"><button type="button" class="btn btn-danger btn-sm">Delete</button></a></center></td>	
+			</form>		          
+		</tr>
+	{% endfor %}		
+	</div>
+	</table>
+{% endif %}
+
+{% endblock %}

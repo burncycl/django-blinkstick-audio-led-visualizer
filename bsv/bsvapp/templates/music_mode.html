@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+
+{% block content %}	
+	{% if messages %}
+	{% for message in messages %}
+		<div class="container">
+		<div class="alert {{ message.tags }} alert-dismissable" role="alert">
+			<button class="close" data-dismiss="alert">
+				<small><sup>x</sup></small>
+			</button>
+			{{ message }}		
+		</div>
+		</div>
+	{% endfor %}
+	{% endif %}
+	<div class="container">
+	<form class="form-inline my-2 my-lg-0" method="POST">
+	{% csrf_token %}
+	<center>
+	{% if flash == True %}
+	<div class="btn-group btn-group-toggle" data-toggle="buttons">
+	  <label class="btn btn-secondary active" >
+	    <input type="radio" name="flash" id="flash" value=True checked> Flash
+	  </label>
+	  <label class="btn btn-secondary">
+	    <input type="radio" name="flash" id="flash" value=False > Off
+	  </label>
+	</div>
+	{% else %}
+	<div class="btn-group btn-group-toggle" data-toggle="buttons">
+	  <label class="btn btn-secondary">
+	    <input type="radio" name="flash" id="flash" value=True> Flash
+	  </label>
+	  <label class="btn btn-secondary active">
+	    <input type="radio" name="flash" id="flash" value=False checked> Off
+	  </label>
+	</div>
+	{% endif %}
+	<p>&nbsp;<br>
+	{% if pulse == True %}
+	<div class="btn-group btn-group-toggle" data-toggle="buttons">
+	  <label class="btn btn-secondary active" >
+	    <input type="radio" name="pulse" id="pulse" value=True checked> Pulse
+	  </label>
+	  <label class="btn btn-secondary">
+	    <input type="radio" name="pulse" id="pulse" value=False > Off
+	  </label>
+	</div>
+	{% else %}
+	<div class="btn-group btn-group-toggle" data-toggle="buttons">
+	  <label class="btn btn-secondary">
+	    <input type="radio" name="pulse" id="pulse" value=True> Pulse
+	  </label>
+	  <label class="btn btn-secondary active">
+	    <input type="radio" name="pulse" id="pulse" value=False checked> Off
+	  </label>
+	</div>
+	{% endif %}
+	<p>&nbsp;<br>
+	{% if loop == True %}
+	<div class="btn-group btn-group-toggle" data-toggle="buttons">
+	  <label class="btn btn-secondary active" >
+	    <input type="radio" name="loop" id="loop" value=True checked> Loop
+	  </label>
+	  <label class="btn btn-secondary">
+	    <input type="radio" name="loop" id="loop" value=False > Off
+	  </label>
+	</div>
+	{% else %}
+	<div class="btn-group btn-group-toggle" data-toggle="buttons">
+	  <label class="btn btn-secondary">
+	    <input type="radio" name="loop" id="loop" value=True> Loop
+	  </label>
+	  <label class="btn btn-secondary active">
+	    <input type="radio" name="loop" id="loop" value=False checked> Off
+	  </label>
+	</div>
+	{% endif %}
+	<p>&nbsp;<br>
+	<span class="btn btn-secondary btn-sm">Min</span><select class="form-control form-control-sm" name="minimum" style="width: 70px !important; min-width: 70px; max-width: 70px;">
+	{% for num in range_list %}
+	{% if num == minimum %}
+	<option value="{{ num }}" selected="selected">{{ num }}</option>
+	{% else %}
+	<option value="{{ num }}">{{ num }}</option>
+	{% endif %}
+	{% endfor %}
+	</select>
+	<span class="btn btn-secondary btn-sm">Max</span><select class="form-control form-control-sm" name="maximum" style="width: 70px !important; min-width: 70px; max-width: 70px;">
+	{% for num in range_list %}
+	{% if num == maximum %}
+	<option value="{{ num }}" selected="selected">{{ num }}</option>
+	{% else %}
+	<option value="{{ num }}">{{ num }}</option>
+	{% endif %}
+	{% endfor %}
+	</select>
+	<br>
+	<font size="2">Transition Time (in Seconds)</font>
+    <p>
+    <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Execute</button>
+	</form>	  
+{% endblock %}
+
