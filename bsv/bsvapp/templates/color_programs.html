@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+	
+{% block content %}	
+	{% if messages %}
+	{% for message in messages %}
+		<div class="container">
+		<div class="alert {{ message.tags }} alert-dismissable" role="alert">
+			<button class="close" data-dismiss="alert">
+				<small><sup>x</sup></small>
+			</button>
+			{{ message }}		
+		</div>
+		</div>
+	{% endfor %}
+	{% endif %}
+	<div class="container">
+	<form class="form-inline my-2 my-lg-0" method="POST">
+	{% csrf_token %}
+	<center>
+    <button class="btn btn-secondary btn-sm" type="submit" name="rotating_rainbow" id="rotating_rainbow" value=True>Rotating Rainbow</button>   
+    <p>&nbsp;<br>
+    <button class="btn btn-secondary btn-sm" type="submit" name="rainbow_snake" id="rainbow_snake" value=True>Rainbow Snake</button>
+    <p>&nbsp;<br>
+    <button class="btn btn-secondary btn-sm" type="submit" name="breathing" id="breathing" value=True>Breathing</button>
+    <p>&nbsp;<br>
+    <button class="btn btn-secondary btn-sm" type="submit" name="snow_storm" id="snow_storm" value=True>Snow Storm</button>
+    <p>&nbsp;<br>
+    <button class="btn btn-secondary btn-sm" type="submit" name="rain_storm" id="rain_storm" value=True>Rain Storm</button>
+    <p>&nbsp;<br>
+    <button class="btn btn-secondary btn-sm" type="submit" name="fire_flies" id="fire_flies" value=True>Fire Flies</button>
+    <p>&nbsp;<br>
+    <button class="btn btn-secondary btn-sm" type="submit" name="fire" id="fire" value=True>Fire</button>
+    <p>&nbsp;<br>
+    <button class="btn btn-secondary btn-sm" type="submit" name="stripes" id="stripes" value=True>Stripes</button>
+    <p>&nbsp;<br>
+    <button class="btn btn-secondary btn-sm" type="submit" name="clear_sky" id="clear_sky" value=True>Clear Sky</button>
+    <p>&nbsp;<br>
+    <button class="btn btn-secondary btn-sm" type="submit" name="cloudy_sky" id="cloudy_sky" value=True>Cloudy Sky</button>
+    <p>&nbsp;<br>
+    <button class="btn btn-secondary btn-sm" type="submit" name="stars" id="stars" value=True>Stars</button>
+	</form>	  	
+{% endblock %}
+

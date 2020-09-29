@@ -17,6 +17,28 @@
 	<form class="form-inline my-2 my-lg-0" method="POST">
 	{% csrf_token %}
 	<center>
+	{% if all_modes == True %}
+	<div class="btn-group btn-group-toggle" data-toggle="buttons">
+	  <label class="btn btn-secondary active" >
+	    <input type="radio" name="all_modes" id="all_modes" value=True checked> All
+	  </label>
+	  <label class="btn btn-secondary">
+	    <input type="radio" name="all_modes" id="all_modes" value=False > Off
+	  </label>
+	</div>
+	{% else %}
+	<div class="btn-group btn-group-toggle" data-toggle="buttons">
+	  <label class="btn btn-secondary">
+	    <input type="radio" name="all_modes" id="all_modes" value=True> All
+	  </label>
+	  <label class="btn btn-secondary active">
+	    <input type="radio" name="all_modes" id="all_modes" value=False checked> Off
+	  </label>
+	</div>
+	{% endif %}
+	<br>
+	<font size="2">Takes Precedence over other modes</font>
+	<p>&nbsp;<br>	
 	{% if flash == True %}
 	<div class="btn-group btn-group-toggle" data-toggle="buttons">
 	  <label class="btn btn-secondary active" >
@@ -77,6 +99,7 @@
 	</div>
 	{% endif %}
 	<p>&nbsp;<br>
+	<div class="row row-centered">
 	<span class="btn btn-secondary btn-sm">Min</span><select class="form-control form-control-sm" name="minimum" style="width: 70px !important; min-width: 70px; max-width: 70px;">
 	{% for num in range_list %}
 	{% if num == minimum %}
@@ -95,10 +118,10 @@
 	{% endif %}
 	{% endfor %}
 	</select>
-	<br>
+	</div>
 	<font size="2">Transition Time (in Seconds)</font>
-    <p>
+    <p>&nbsp;<br>    
     <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Execute</button>
-	</form>	  
+	</form></div>
 {% endblock %}
 

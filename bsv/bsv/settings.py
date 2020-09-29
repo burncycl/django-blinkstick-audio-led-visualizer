@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'loz^pj#_ws=l(se+&+b35ao%9z-x8#83=1-#0je-!(%uco42!)'
+SECRET_KEY = 'loz^pj#_ws=l(se+&+b35ao%9z-x8#83=1-#0je-!(%uco42!)' # I know this is exposed in code. In AWS you can use SSM Parameter Store + KMS to encrypt.
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -112,3 +112,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 STATIC_URL = '/static/'
+
+# Remove Receive Nodes Cache at start.
+receive_nodes_list = './receive_nodes.list' 
+if os.path.isfile(receive_nodes_list):
+    os.remove(receive_nodes_list)

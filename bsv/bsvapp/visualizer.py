@@ -31,8 +31,8 @@ class BlinkStickViz:
         self.receive_nodes_file = './receive_nodes.list' # Hard-coded filename of receive nodes (IP Addresses) if in transmit mode. List each IP Address on it's own line.  
         if self.transmit == True:            
             self.receive_nodes = [] # Empty list of receive nodes updated by self.get_receive_nodes(). Either updated by hard-coded list or auto-discovery (self.udp_discovery())
-            self.get_receive_nodes()
-            
+            self.get_receive_nodes()        
+        
         # PyAudio Variables.
         self.device = device
         self.paud = pa.PyAudio()
@@ -122,12 +122,12 @@ class BlinkStickViz:
                     if '.' in ip_address: # Chuck any line that doesn't have a dot in it (i.e. an IP address format 10.9.9.X). 
                         ip_address = ip_address.rstrip('\n')
                         self.receive_nodes.append(ip_address) # Append IP to list of receive nodes. Remove newline.
-                        self.udp_acknowledge(ip_address)                
+                        self.udp_acknowledge(ip_address)
                     else:
                         continue # Skip lines without dots.              
-        else: # If no hard coded IP list is specified, use auto discovery mechanism.
-            print('No Hard-coded IP list provided, Starting Auto Discovery...')
-            Thread(target=self.udp_discovery).start() # Threaded Start UDP Discovery.             
+        #else: # If no hard coded IP list is specified, use auto discovery mechanism.
+        #print('No Hard-coded IP list provided, Starting Auto Discovery...')
+        Thread(target=self.udp_discovery).start() # Threaded Start UDP Discovery.             
           
     def udp_announce(self):                
         try:        
@@ -169,8 +169,16 @@ class BlinkStickViz:
                 receive_node_ip = decoded_data.rsplit(' ', 1)[1]
                 if receive_node_ip not in self.receive_nodes: # Update the self.receive_nodes with newly discovered nodes.
                     print('Auto Discovery - Found: {}, on Port: {}'.format(receive_node_ip, self.receive_port))
-                    self.receive_nodes.append(receive_node_ip) # Add node to our list of discovered/known receiving nodes. 
+                    self.receive_nodes.append(receive_node_ip) # Add node to our list of discovered/known receiving nodes.
+                    self.cache_discovered_nodes() # Write the discovered nodes out to a cache for faster discovery.
                 self.udp_acknowledge(receive_node_ip)
+
+    def cache_discovered_nodes(self):
+        print('Wrote Receive Node IP Addresses to Cache.')
+        with open(self.receive_nodes_file, 'w+') as f:
+            for ip_address in self.receive_nodes:
+                f.write('{}\n'.format(ip_address))
+        f.close()            
 
     def udp_acknowledge(self, receive_node_ip): # Tell the receiving node, that we have discovered them, and thus stop broadcasting.                        
             data = pickle.dumps('acknowledged') # Serialize the data for transmission.
@@ -370,4 +378,3 @@ class BlinkStickViz:
             last_frame = frame
             if self.stop == True: # Handle stopping the thread, so another visualization can be executed.
                 break
-

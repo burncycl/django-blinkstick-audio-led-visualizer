@@ -1,0 +1,206 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}	
+	{% if messages %}
+	{% for message in messages %}
+		<div class="container">
+		<div class="alert {{ message.tags }} alert-dismissable" role="alert">
+			<button class="close" data-dismiss="alert">
+				<small><sup>x</sup></small>
+			</button>
+			{{ message }}		
+		</div>
+		</div>
+	{% endfor %}
+	{% endif %}	
+	<div class="container centered">
+	<form class="tr" method="POST">	
+	{% csrf_token %}
+	<center>
+	<span class="btn btn-dark">
+	{% if single_mode == True %}
+	<div class="btn-group btn-group-toggle" data-toggle="buttons">
+	  <label class="btn btn-secondary active" >
+	    <input type="radio" name="single_mode" id="single_mode" value=True checked> Single Color
+	  </label>
+	  <label class="btn btn-secondary">
+	    <input type="radio" name="single_mode" id="single_mode" value=False > Off
+	  </label>
+	</div>
+	{% else %}
+	<div class="btn-group btn-group-toggle" data-toggle="buttons">
+	  <label class="btn btn-secondary">
+	    <input type="radio" name="single_mode" id="single_mode" value=True> Single Color
+	  </label>
+	  <label class="btn btn-secondary active">
+	    <input type="radio" name="single_mode" id="single_mode" value=False checked> Off
+	  </label>
+	</div>	
+	{% endif %}
+	<br>
+	<font size="2">Takes the First Color if multiple selected</font>
+    </span>
+    <p>&nbsp;<br>
+    <div class="container centered">
+    <span class="btn btn-dark">
+	    <span class="btn btn-light">
+		{% if blink_mode == True %}
+		<div class="btn-group btn-group-toggle" data-toggle="buttons">
+		  <label class="btn btn-secondary active" >
+		    <input type="radio" name="blink_mode" id="blink_mode" value=True checked> Blink
+		  </label>
+		  <label class="btn btn-secondary">
+		    <input type="radio" name="blink_mode" id="blink_mode" value=False > Off
+		  </label>
+		</div>
+		{% else %}
+		<div class="btn-group btn-group-toggle" data-toggle="buttons">
+		  <label class="btn btn-secondary">
+		    <input type="radio" name="blink_mode" id="blink_mode" value=True> Blink
+		  </label>
+		  <label class="btn btn-secondary active">
+		    <input type="radio" name="blink_mode" id="blink_mode" value=False checked> Off
+		  </label>
+		</div>
+		{% endif %}
+		<p>
+		<div class="centered">
+		<center>
+			<span class="btn btn-secondary btn-sm">Transition Time</span>	
+			<select class="form-control form-control-sm" name="blink_duration" style="width: 70px !important; min-width: 70px; max-width: 70px;">
+			{% for num in blink_duration_range %}
+			{% if num == blink_duration %}
+			<option value="{{ num }}" selected="selected">{{ num }}</option>
+			{% else %}
+			<option value="{{ num }}">{{ num }}</option>
+			{% endif %}
+			{% endfor %}	
+			</select>
+		</div>
+		<font size="2">Time in Seconds</font>
+		</span>
+		<p>&nbsp;<br>
+		<center>
+		<div class="container centered">
+		<span class="btn btn-light">	
+		{% if morph_mode == True %}
+		<div class="btn-group btn-group-toggle" data-toggle="buttons">
+		  <label class="btn btn-secondary active" >
+		    <input type="radio" name="morph_mode" id="morph_mode" value=True checked> Morph
+		  </label>
+		  <label class="btn btn-secondary">
+		    <input type="radio" name="morph_mode" id="morph_mode" value=False > Off
+		  </label>
+		</div>
+		{% else %}
+		<div class="btn-group btn-group-toggle" data-toggle="buttons">
+		  <label class="btn btn-secondary">
+		    <input type="radio" name="morph_mode" id="morph_mode" value=True> Morph
+		  </label>
+		  <label class="btn btn-secondary active">
+		    <input type="radio" name="morph_mode" id="morph_mode" value=False checked> Off
+		  </label>
+		</div>	
+		{% endif %}
+		<p>&nbsp;<br>
+		{% if flow == True %}
+		<div class="btn-group btn-group-toggle" data-toggle="buttons">
+		  <label class="btn btn-secondary active" >
+		    <input type="radio" name="flow" id="flow" value=True checked> Flow
+		  </label>
+		  <label class="btn btn-secondary">
+		    <input type="radio" name="flow" id="flow" value=False > Off
+		  </label>
+		</div>
+		{% else %}
+		<div class="btn-group btn-group-toggle" data-toggle="buttons">
+		  <label class="btn btn-secondary">
+		    <input type="radio" name="flow" id="flow" value=True> Flow
+		  </label>
+		  <label class="btn btn-secondary active">
+		    <input type="radio" name="flow" id="flow" value=False checked> Off
+		  </label>
+		</div>	
+		{% endif %}	
+		<p>&nbsp;<br>
+		<div class="btn-group btn-group-toggle" data-toggle="buttons">
+		  <label class="btn btn-secondary active" >
+		    <input type="radio" name="sine" id="sine" value=True> Sine
+		  </label>
+		  <label class="btn btn-secondary">
+		    <input type="radio" name="leap" id="leap" value=True> Leap
+		  </label>
+		  <label class="btn btn-secondary">
+		    <input type="radio" name="rev" id="rev" value=True> Rev
+		  </label>
+		  <label class="btn btn-secondary">
+		    <input type="radio" name="blink" id="blink" value=True> Blink
+		  </label>
+		</div>
+		<p>
+		<div class="centered">
+		<center>
+			<span class="btn btn-secondary btn-sm">Brightness</span><select class="form-control form-control-sm" name="brightness" style="width: 70px !important; min-width: 70px; max-width: 70px;">
+			{% for num in brightness_range %}
+			{% if num == brightness %}
+			<option value="{{ num }}" selected="selected">{{ num }}</option>
+			{% else %}
+			<option value="{{ num }}">{{ num }}</option>
+			{% endif %}
+			{% endfor %}
+			</select>
+		</span></div></center>	
+	<br><center>
+	<span class="btn btn-secondary btn-sm">Duration</span>	
+	<select class="form-control form-control-sm" name="duration" style="width: 70px !important; min-width: 70px; max-width: 70px;">
+	{% for num in duration_range %}
+	{% if num == duration %}
+	<option value="{{ num }}" selected="selected">{{ num }}</option>
+	{% else %}
+	<option value="{{ num }}">{{ num }}</option>
+	{% endif %}
+	{% endfor %}	
+	</select></center>
+	</span>
+	<p>&nbsp;<br>	
+	<table  border="1" cellpadding="7" cellspacing="5" width="100%" height="1067"> 
+		<tr>
+			<td bgcolor="#FF00BE"><div class="btn-group-toggle" data-toggle="buttons"><label class="btn btn-secondary active"><input type="radio" name="FF00BE" id="FF00BE" value=True> ✓</label></div></td>					
+			<td bgcolor="#00FF9E"><div class="btn-group-toggle" data-toggle="buttons"><label class="btn btn-secondary active"><input type="radio" name="_00FF9E" id="_00FF9E" value=True> ✓</label></div></td>
+		</tr>
+		<tr>
+			<td bgcolor="#FF005E"><div class="btn-group-toggle" data-toggle="buttons"><label class="btn btn-secondary active"><input type="radio" name="FF005E" id="FF005E" value=True> ✓</label></div></td>					
+			<td bgcolor="#00FFFD"><div class="btn-group-toggle" data-toggle="buttons"><label class="btn btn-secondary active"><input type="radio" name="_00FFFD" id="_00FFFD" value=True> ✓</label></div></td>
+		</tr>
+		<tr>
+			<td bgcolor="#FF0003"><div class="btn-group-toggle" data-toggle="buttons"><label class="btn btn-secondary active"><input type="radio" name="FF0003" id="FF0063" value=True> ✓</label></div></td>					
+			<td bgcolor="#00A0FF"><div class="btn-group-toggle" data-toggle="buttons"><label class="btn btn-secondary active"><input type="radio" name="_00A0FF" id="_00A0FF" value=True> ✓</label></div></td>
+		</tr>
+		<tr>
+			<td bgcolor="#FF5C00"><div class="btn-group-toggle" data-toggle="buttons"><label class="btn btn-secondary active"><input type="radio" name="FF5C00" id="FF5C00" value=True> ✓</label></div></td>
+			<td bgcolor="#0000FF"><div class="btn-group-toggle" data-toggle="buttons"><label class="btn btn-secondary active"><input type="radio" name="_0000FF" id="_0000FF" value=True> ✓</label></div></td>
+		</tr>
+		<tr>
+			<td bgcolor="#FFBC00"><div class="btn-group-toggle" data-toggle="buttons"><label class="btn btn-secondary active"><input type="radio" name="FFBC00" id="FFBC00" value=True> ✓</label></div></td>
+			<td bgcolor="#7F00FF"><div class="btn-group-toggle" data-toggle="buttons"><label class="btn btn-secondary active"><input type="radio" name="_7F00FF" id="_7F00FF" value=True> ✓</label></div></td>
+		</tr>
+		<tr>
+			<td bgcolor="#FFFF00"><div class="btn-group-toggle" data-toggle="buttons"><label class="btn btn-secondary active"><input type="radio" name="FFFF00" id="FFFF00" value=True> ✓</label></div></td>
+			<td bgcolor="#4B0082"><div class="btn-group-toggle" data-toggle="buttons"><label class="btn btn-secondary active"><input type="radio" name="_4B0082" id="_4B0082" value=True> ✓</label></div></td>
+		</tr>
+		<tr>
+			<td bgcolor="#81FF00"><div class="btn-group-toggle" data-toggle="buttons"><label class="btn btn-secondary active"><input type="radio" name="_81FF00" id="_81FF00" value=True> ✓</label></div></td>
+			<td bgcolor="#9400D3"><div class="btn-group-toggle" data-toggle="buttons"><label class="btn btn-secondary active"><input type="radio" name="_9400D3" id="_9400D3" value=True> ✓</label></div></td>
+		</tr>
+		<tr>
+			<td bgcolor="#00FF00"><div class="btn-group-toggle" data-toggle="buttons"><label class="btn btn-secondary active"><input type="radio" name="_00FF00" id="_00FF00" value=True> ✓</label></div></td>
+			<td bgcolor="#FFFFFF"><div class="btn-group-toggle" data-toggle="buttons"><label class="btn btn-secondary active"><input type="radio" name="FFFFFF" id="FFFFFF" value=True> ✓</label></div></td>
+		</tr>	
+	</table>
+    <p>&nbsp;<br>  
+    <center>
+    <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Execute</button>
+	</form>
+	</center></div>
+{% endblock %}
+

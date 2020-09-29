@@ -6,6 +6,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("", views.home, name='home'),
     path("home", views.home, name='home'),
-    path("music_mode", views.music_mode, name='music_mode'),
-    path("color_mode", views.color_mode, name='color_mode'),            
+    path("music_modes", views.music_modes, name='music_modes'),
+    path("color_modes", views.color_modes, name='color_modes'),
+    path("color_programs", views.color_programs, name='color_programs'),    
+    path("off", views.off, name='off'),
 ]
