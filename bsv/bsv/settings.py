@@ -130,3 +130,6 @@ CELERY_ALWAYS_EAGER = False
 # Clear Queue
 from .celery import app
 app.control.purge()
+
+# Default Network Interface
+if_face = 'wlan0'
