@@ -9,7 +9,6 @@ from os import path
 from threading import Thread
 import netifaces as ni
 from webcolors import hex_to_rgb
-import array
 
 class BlinkStickColors:
     def __init__(self, transmit, network_interface):        
@@ -124,7 +123,7 @@ class BlinkStickColors:
             for i in range(1,self.led_count+1):
                 (r, g, b) = hsv_to_rgb(i/float(self.led_count*(1.0/cut))+time()*speed, 1, brightness)
                 data = data + [int(g*255), int(r*255), int(b*255)]
-                print(data)                        
+                #print(data) # Debugging
             self.send_to_stick(data)
             sleep(1/fps)
 

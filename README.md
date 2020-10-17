@@ -7,3 +7,8 @@ django-admin.py startproject bsv
 cd ./bsv
 python3 manage.py startapp bsvapp
 ```
+
+### Enable Virtual Environment + Development Mode
+```
+source ./init.sh
+``` 

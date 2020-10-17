@@ -6,4 +6,4 @@ SCREEN=`which screen`
 
 kill -15 $PROCESS_ID
 sleep 1
-${SCREEN} -dmS audit bash -c "${SCRIPT_PATH}/start.sh"
+${SCREEN} -dmS bsv bash -c "${SCRIPT_PATH}/start.sh"
