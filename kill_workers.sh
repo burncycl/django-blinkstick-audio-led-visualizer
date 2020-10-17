@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Script designed to work with Celery 5.0.0
+
 APP="bsv"
 cd ./${APP}
 celery -A ${APP} purge -f
