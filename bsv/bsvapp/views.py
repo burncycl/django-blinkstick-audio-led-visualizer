@@ -3,61 +3,26 @@ from django.http import HttpResponse
 from django.template import loader, RequestContext
 from django.contrib import messages
 from django.db import transaction
+from django.conf import settings
 # Forms
 from .forms import MusicModesForm
 from .forms import ColorModesForm
 from .forms import ColorProgramsForm
 # Modules
-from .visualizer import BlinkStickViz
-from .color_programs import BlinkStickColors
-# External Dependencies
-import multiprocessing
+from .worker import * # Utilizes Celery workers to delegate multiprocessing tasks.
 
-processes = [] # Holds list of Processes, so that we can terminate them if the visualization program is changed.
 
-# Visualizations
-def start_visualizer(minimum, maximum, modes):
-    BlinkStickViz(sensitivity=1.3, rate=44100, chunk=1024, channels=2, max_int=maximum, min_int=minimum, transmit=True, 
-            receive=False, network_interface='wlan0', inputonly=False, led_count=32, device=None).main(modes=modes)    
-
-def start_rotating_rainbow():
-    BlinkStickColors(transmit=True, network_interface='wlan0').rotating_rainbow()
-
-def start_rainbow_snake():
-    BlinkStickColors(transmit=True, network_interface='wlan0').rainbow_snake()
-
-def start_breathing():
-    BlinkStickColors(transmit=True, network_interface='wlan0').breathing()
-
-def start_snow_storm():
-    BlinkStickColors(transmit=True, network_interface='wlan0').storm(snow=True)
-
-def start_rain_storm():
-    BlinkStickColors(transmit=True, network_interface='wlan0').storm(snow=False)
-
-def start_fire_flies():
-    BlinkStickColors(transmit=True, network_interface='wlan0').fire_flies()
-
-def start_fire():
-    BlinkStickColors(transmit=True, network_interface='wlan0').fire()
-
-def start_stripes():
-    BlinkStickColors(transmit=True, network_interface='wlan0').stripes()
-
-def start_clear_sky():
-    BlinkStickColors(transmit=True, network_interface='wlan0').sky(sunny=True, cloudy=False)
-
-def start_cloudy_sky():
-    BlinkStickColors(transmit=True, network_interface='wlan0').sky(sunny=True, cloudy=True)
-
-def start_stars():
-    BlinkStickColors(transmit=True, network_interface='wlan0').stars()
-
-def start_custom_color_mode(mode, colors, duration, blink_duration, flow, lerp, brightness):
-    BlinkStickColors(transmit=True, network_interface='wlan0').custom_color_mode(mode, colors, duration, blink_duration, flow, lerp, brightness)
-
-def start_clear():
-    BlinkStickColors(transmit=True, network_interface='wlan0').clear()    
+# Celery Task Management
+celery_tasks = []
+def stop_celery_tasks():    
+    if len(celery_tasks) > 0: # Stop Celery tasks if any are running.
+        for celery_task in celery_tasks:
+            try:
+                print('Terminating Celery Task: {}'.format(celery_task))
+                celery_task.revoke(terminate=True)
+                celery_tasks.remove(celery_task)
+            except Exception as e:
+                print(e)
 
 # Views
 def home(request):
@@ -83,21 +48,7 @@ def music_modes(request):
     elif request.method == 'POST':
         form = MusicModesForm(request.POST or None)
         if form.is_valid():                                
-            # Stop running process, if exists. 
-            if processes:
-                for process in processes:
-                    print('Stopping Process: {}.'.format(process.name))
-                    try:            
-                        process.terminate()
-                        process.join()
-                        processes.remove(process)
-                        #sleep(0.5)
-                    except Exception as e:
-                        print(e)
-                        if process in processes:
-                            process.terminate()
-                            process.join()
-                            processes.remove(process)
+            stop_celery_tasks() # Stop any Celery Tasks that might be running.
             cd = form.cleaned_data                                                    
             all_modes = cd.get('all_modes')
             flash = cd.get('flash')
@@ -127,11 +78,10 @@ def music_modes(request):
                 if loop:
                     modes.append('loop')
 
-            # Execute the visualizer on a process, that way we can kill it when new instructions are posted.
-            p = multiprocessing.Process(name='visualizer', target=start_visualizer, args=[minimum, maximum, modes])
-            processes.append(p)
-            p.start()
-            
+            # Execute Celery Worker
+            t = start_visualizer.apply_async(args=[minimum, maximum, modes])
+            celery_tasks.append(t)
+                        
             context = {'all_modes': all_modes, 'flash': flash, 'pulse': pulse, 'loop': loop, 'range_list': range_list, 'minimum': int(minimum), 'maximum': int(maximum)}
             return render(request, template, context)
         else:
@@ -155,42 +105,26 @@ def color_modes(request):
 
     elif request.method == 'POST':
         form = ColorModesForm(request.POST or None)
-        if form.is_valid():
-            # Stop running process, if exists. 
-            if processes:
-                for process in processes:
-                    print('Stopping Process: {}.'.format(process.name))
-                    try:            
-                        process.terminate()
-                        process.join()
-                        processes.remove(process)
-                        #sleep(0.5)
-                    except Exception as e:
-                        print(e)
-                        if process in processes:
-                            process.terminate()
-                            process.join()
-                            processes.remove(process)
-            
+        if form.is_valid(): 
+            stop_celery_tasks() # Stop any Celery Tasks that might be running.            
             cd = form.cleaned_data
             single_mode = cd.get('single_mode')
             blink_mode = cd.get('blink_mode')
             duration = cd.get('duration')     
-            blink_duration = cd.get('blink_duration')     
-            print('my_duration: {}'.format(duration))
-            print('blink_duration: {}'.format(blink_duration))       
-            
+            blink_duration = cd.get('blink_duration')                 
             morph_mode = cd.get('morph_mode')
             flow = cd.get('flow')                        
-            print(single_mode, blink_mode, blink_duration, morph_mode, flow) # Debugging
-            
             sine = cd.get('sine')
             leap = cd.get('leap')
             rev = cd.get('rev')
             blink = cd.get('blink')
-            brightness = cd.get('brightness')
+            brightness = cd.get('brightness')            
             
-            print(sine, leap, rev, blink)
+            # Debugging
+            #print('my_duration: {}'.format(duration))
+            #print('blink_duration: {}'.format(blink_duration))       
+            #print(single_mode, blink_mode, blink_duration, morph_mode, flow)            
+            #print(sine, leap, rev, blink, brightness)
                 
             FF0063 = cd.get('FF0063')
             FF005E = cd.get('FF005E')
@@ -220,12 +154,12 @@ def color_modes(request):
             FF00BE = cd.get('FF00BE')
             CCCCCC = cd.get('CCCCCC')
             FFFFFF = cd.get('FFFFFF')            
-            print(FF0063, FF005E, FF0003, FF0000, FF5C00, 
-                  FF6000, FF7F00, FFBC00, FFC000, FFFF00, 
-                  E1FF00, _81FF00, _21FF00, _00FF00, _00FF9E, 
-                  _00FFFD, _00A0FF, _0040FF, _0000FF, _1F00FF, 
-                  _7F00FF, _4B0082, _9400D3, DF00FF, FF00C3, 
-                  FF00BE, CCCCCC, FFFFFF) # Debugging
+#             print(FF0063, FF005E, FF0003, FF0000, FF5C00, 
+#                   FF6000, FF7F00, FFBC00, FFC000, FFFF00, 
+#                   E1FF00, _81FF00, _21FF00, _00FF00, _00FF9E, 
+#                   _00FFFD, _00A0FF, _0040FF, _0000FF, _1F00FF, 
+#                   _7F00FF, _4B0082, _9400D3, DF00FF, FF00C3, 
+#                   FF00BE, CCCCCC, FFFFFF) # Debugging
             
             if single_mode:
                 mode = 'single'
@@ -319,10 +253,9 @@ def color_modes(request):
             if FFFFFF:
                 colors.append('#FFFFFF')
 
-            # Execute the custom color mode on a process, that way we can kill it when new instructions are posted.
-            p = multiprocessing.Process(name='custom_color_mode', target=start_custom_color_mode, args=[mode, colors, duration, blink_duration, flow, lerp, brightness])
-            processes.append(p)
-            p.start()
+            # Execute Celery Worker          
+            t = start_custom_color_mode.apply_async(args=[mode, colors, duration, blink_duration, flow, lerp, brightness])
+            celery_tasks.append(t)
                                     
             context = {'single_mode': single_mode, 'blink_mode': blink_mode, 'duration_range': duration_range, 'duration': int(duration), 'blink_duration_range': blink_duration_range, 'blink_duration': float(blink_duration), 'morph_mode': morph_mode, 'flow': flow, 'lerp': lerp, 'brightness_range': brightness_range, 'brightness': float(brightness)}
             return render(request, template, context)                
@@ -336,22 +269,7 @@ def color_programs(request):
     elif request.method == 'POST':
         form = ColorProgramsForm(request.POST or None)
         if form.is_valid():
-            # Stop running process, if exists. 
-            if processes:
-                for process in processes:
-                    print('Stopping Process: {}.'.format(process.name))
-                    try:            
-                        process.terminate()
-                        process.join() 
-                        processes.remove(process)
-                        #sleep(0.5)
-                    except Exception as e:
-                        print(e)
-                        if process in processes:
-                            process.terminate()
-                            process.join()
-                            processes.remove(process)
-
+            stop_celery_tasks() # Stop any Celery Tasks that might be running.
             cd = form.cleaned_data                                                                                                
             rotating_rainbow = cd.get('rotating_rainbow')
             rainbow_snake = cd.get('rainbow_snake')
@@ -365,69 +283,52 @@ def color_programs(request):
             cloudy_sky = cd.get('cloudy_sky')
             stars = cd.get('stars')
             if rotating_rainbow:
-                p = multiprocessing.Process(name='rotating_rainbow', target=start_rotating_rainbow)
-                processes.append(p)
-                p.start()                                
+                t = start_rotating_rainbow.apply_async()
+                celery_tasks.append(t)                
             if rainbow_snake:
-                p = multiprocessing.Process(name='rainbow_snake', target=start_rainbow_snake)
-                processes.append(p)
-                p.start()                                                                                                                                                                                                                                                                                                                                                                                            
+                t = start_rainbow_snake.apply_async()
+                celery_tasks.append(t)                
             if breathing:
-                p = multiprocessing.Process(name='breathing', target=start_breathing)
-                processes.append(p)
-                p.start()                                
+                t = start_breathing.apply_async()
+                celery_tasks.append(t)                
             if snow_storm:
-                p = multiprocessing.Process(name='snow_storm', target=start_snow_storm)
-                processes.append(p)
-                p.start()                                
+                t = start_snow_storm.apply_async()
+                celery_tasks.append(t)                
             if rain_storm:
-                p = multiprocessing.Process(name='rain_storm', target=start_rain_storm)
-                processes.append(p)
-                p.start()                                
+                t = start_rain_storm.apply_async()
+                celery_tasks.append(t)                
             if fire_flies:
-                p = multiprocessing.Process(name='fire_flies', target=start_fire_flies)
-                processes.append(p)
-                p.start()                                
+                t = start_fire_flies.apply_async()
+                celery_tasks.append(t)                
             if fire:
-                p = multiprocessing.Process(name='fire', target=start_fire)
-                processes.append(p)
-                p.start()
+                t = start_fire.apply_async()
+                celery_tasks.append(t)                
             if stripes:
-                p = multiprocessing.Process(name='stripes', target=start_stripes)
-                processes.append(p)
-                p.start()
+                t = start_stripes.apply_async()
+                celery_tasks.append(t)                
             if clear_sky:
-                p = multiprocessing.Process(name='sky', target=start_clear_sky)
-                processes.append(p)
-                p.start()                                                                                                                                                                                
+                t = start_clear_sky.apply_async()
+                celery_tasks.append(t)                
             if cloudy_sky:
-                p = multiprocessing.Process(name='sky', target=start_cloudy_sky)
-                processes.append(p)
-                p.start()                                                                                                                                                                                
+                t = start_cloudy_sky.apply_async()
+                celery_tasks.append(t)                
             if stars:
-                p = multiprocessing.Process(name='stars', target=start_stars)
-                processes.append(p)
-                p.start()
-            return render(request, template)
+                t = start_stars.apply_async()
+                celery_tasks.append(t)
+            return render(request, template)            
 
 def off(request):
     if request.method == 'GET':
-        if processes:
-            for process in processes:
-                print('Stopping Process: {}.'.format(process.name))
-                try:            
-                    process.terminate()
-                    process.join() 
-                    processes.remove(process)
-                    #sleep(0.5)
-                except Exception as e:
-                    print(e)
-                    if process in processes:
-                        process.terminate()
-                        process.join()
-                        processes.remove(process)
-        # Execute clear on a process, that way we can kill it when new instructions are posted.
-        p = multiprocessing.Process(name='clear', target=start_clear)
-        processes.append(p)
-        p.start()                    
+        stop_celery_tasks()
+        t = start_clear.delay()    
+        celery_tasks.append(t)    
         return redirect('home')   
+
+def celery_stop(request):
+    stop_celery_tasks()    
+    return HttpResponse("Stopping Celery Tasks")
+
+def celery_start(request):
+    stop_celery_tasks()
+    add.delay(7, 8)
+    return HttpResponse("Sent Test Celery Task to Worker")

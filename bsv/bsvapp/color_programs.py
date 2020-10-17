@@ -153,15 +153,15 @@ class BlinkStickColors:
                 data = [int(last.green*255), int(last.red*255), int(last.blue*255)] * self.led_count                    
                 self.send_to_stick(data)
                 sleep(1/fps)                
-                print('breathe in', last)
-            print('pause', last)
+                #print('breathe in', last)
+            #print('pause', last)
             sleep(1/fps*7)
             while last.hex != colorout.hex and last.luminance > .004: # For fading to black, this helps a bit since the blinkstick completely blanks out at low brightness levels.
                 last = Color(rgb=((last.red*6+colorout.red)/7, (last.green*6+colorout.green)/7, (last.blue*6+colorout.blue)/7))
                 data = [int(last.green*255), int(last.red*255), int(last.blue*255)] * self.led_count
                 self.send_to_stick(data)
                 sleep(1/fps)
-                print('breathe out', last)        
+                #print('breathe out', last)        
                         
     def storm(self, snow):        
         loop = True # Whether or not the blinkstick loops around on itself. If True, flakes/drops will fall from both ends to the center of the strip.

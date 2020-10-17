@@ -219,7 +219,7 @@ class BlinkStickViz:
   
     def send_to_stick(self, data):
         if self.transmit == True: # If we're in transmit mode send the led data via UDP.
-            self.udp_transmit(data)        
+            self.udp_transmit(data)
         if self.inputonly == False: # If input only is False, we'll send data to multiple connected Blinkstick Devices.
             for stick in self.sticks: # Loop over one of more Blinkstick devices sending visualization processed LED data.
                 try:

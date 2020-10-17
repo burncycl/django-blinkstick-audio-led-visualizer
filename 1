@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# Kill off previous running workers (if any).
+ps auxww | grep 'celery -A' | awk '{print $2}' | xargs kill
+sleep 3
+ps auxww | grep 'celery -A' | awk '{print $2}' | xargs kill -9
+
+APP="bsv"
+
+cd ./${APP}
+
+celery -A ${APP} worker --loglevel=INFO --pool=solo --concurrency=1 -n worker1@%h &
+celery -A ${APP} worker --loglevel=INFO --pool=solo --concurrency=1 -n worker2@%h &
+
+#celery worker -A ${APP} -l info --pool=solo --concurrency=1 -n worker1@%h &
+#celery worker -A ${APP} -l info --pool=solo --concurrency=1 -n worker2@%h &
+#celery worker -A ${APP} -l info --pool=solo --concurrency=1 -n worker3@%h &
+#celery worker -A ${APP} -l info --pool=solo --concurrency=1 -n worker4@%h &
+#celery worker -A ${APP} -l info --pool=solo --concurrency=1 -n worker5@%h &
+#celery worker -A ${APP} -l info --pool=solo --concurrency=1 -n worker6@%h &

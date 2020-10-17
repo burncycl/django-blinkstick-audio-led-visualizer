@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'loz^pj#_ws=l(se+&+b35ao%9z-x8#83=1-#0je-!(%uco42!)' # I know this is exposed in code. In AWS you can use SSM Parameter Store + KMS to encrypt.
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['10.9.9.126']
 
@@ -117,3 +117,16 @@ STATIC_URL = '/static/'
 receive_nodes_list = './receive_nodes.list' 
 if os.path.isfile(receive_nodes_list):
     os.remove(receive_nodes_list)
+
+# Celery  Configuration
+BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'America/Denver'
+CELERY_ALWAYS_EAGER = False
+
+# Clear Queue
+from bsv.celery import app
+app.control.purge()

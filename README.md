@@ -1,4 +1,9 @@
 
+### Prerequisites
+```
+sudo apt install redis-server
+```
+
 ### Bootstrapping Django for the first time.
 
 Inside a blank repository

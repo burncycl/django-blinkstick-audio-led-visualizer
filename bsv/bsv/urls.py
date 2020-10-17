@@ -10,4 +10,6 @@ urlpatterns = [
     path("color_modes", views.color_modes, name='color_modes'),
     path("color_programs", views.color_programs, name='color_programs'),    
     path("off", views.off, name='off'),
+    path("celery_start", views.celery_start, name='celery_start'),
+    path("celery_stop", views.celery_stop, name='celery_stop'),    
 ]
