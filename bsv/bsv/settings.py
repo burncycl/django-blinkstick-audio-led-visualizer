@@ -25,7 +25,7 @@ SECRET_KEY = 'loz^pj#_ws=l(se+&+b35ao%9z-x8#83=1-#0je-!(%uco42!)' # I know this 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['10.9.9.126']
+ALLOWED_HOSTS = ['127.0.0.1', '10.9.9.126']
 
 
 # Application definition
@@ -128,5 +128,5 @@ CELERY_TIMEZONE = 'America/Denver'
 CELERY_ALWAYS_EAGER = False
 
 # Clear Queue
-from bsv.celery import app
+from .celery import app
 app.control.purge()

@@ -18,16 +18,6 @@
 	{% csrf_token %}
 	<center>
 	<span class="btn btn-dark">
-	{% if single_mode == True %}
-	<div class="btn-group btn-group-toggle" data-toggle="buttons">
-	  <label class="btn btn-secondary active" >
-	    <input type="radio" name="single_mode" id="single_mode" value=True checked> Single Color
-	  </label>
-	  <label class="btn btn-secondary">
-	    <input type="radio" name="single_mode" id="single_mode" value=False > Off
-	  </label>
-	</div>
-	{% else %}
 	<div class="btn-group btn-group-toggle" data-toggle="buttons">
 	  <label class="btn btn-secondary">
 	    <input type="radio" name="single_mode" id="single_mode" value=True> Single Color
@@ -36,7 +26,6 @@
 	    <input type="radio" name="single_mode" id="single_mode" value=False checked> Off
 	  </label>
 	</div>	
-	{% endif %}
 	<br>
 	<font size="2">Takes the First Color if multiple selected</font>
     </span>
@@ -44,16 +33,7 @@
     <div class="container centered">
     <span class="btn btn-dark">
 	    <span class="btn btn-light">
-		{% if blink_mode == True %}
-		<div class="btn-group btn-group-toggle" data-toggle="buttons">
-		  <label class="btn btn-secondary active" >
-		    <input type="radio" name="blink_mode" id="blink_mode" value=True checked> Blink
-		  </label>
-		  <label class="btn btn-secondary">
-		    <input type="radio" name="blink_mode" id="blink_mode" value=False > Off
-		  </label>
-		</div>
-		{% else %}
+
 		<div class="btn-group btn-group-toggle" data-toggle="buttons">
 		  <label class="btn btn-secondary">
 		    <input type="radio" name="blink_mode" id="blink_mode" value=True> Blink
@@ -62,7 +42,6 @@
 		    <input type="radio" name="blink_mode" id="blink_mode" value=False checked> Off
 		  </label>
 		</div>
-		{% endif %}
 		<p>
 		<div class="centered">
 		<center>
@@ -83,16 +62,6 @@
 		<center>
 		<div class="container centered">
 		<span class="btn btn-light">	
-		{% if morph_mode == True %}
-		<div class="btn-group btn-group-toggle" data-toggle="buttons">
-		  <label class="btn btn-secondary active" >
-		    <input type="radio" name="morph_mode" id="morph_mode" value=True checked> Morph
-		  </label>
-		  <label class="btn btn-secondary">
-		    <input type="radio" name="morph_mode" id="morph_mode" value=False > Off
-		  </label>
-		</div>
-		{% else %}
 		<div class="btn-group btn-group-toggle" data-toggle="buttons">
 		  <label class="btn btn-secondary">
 		    <input type="radio" name="morph_mode" id="morph_mode" value=True> Morph
@@ -101,18 +70,7 @@
 		    <input type="radio" name="morph_mode" id="morph_mode" value=False checked> Off
 		  </label>
 		</div>	
-		{% endif %}
 		<p>&nbsp;<br>
-		{% if flow == True %}
-		<div class="btn-group btn-group-toggle" data-toggle="buttons">
-		  <label class="btn btn-secondary active" >
-		    <input type="radio" name="flow" id="flow" value=True checked> Flow
-		  </label>
-		  <label class="btn btn-secondary">
-		    <input type="radio" name="flow" id="flow" value=False > Off
-		  </label>
-		</div>
-		{% else %}
 		<div class="btn-group btn-group-toggle" data-toggle="buttons">
 		  <label class="btn btn-secondary">
 		    <input type="radio" name="flow" id="flow" value=True> Flow
@@ -121,7 +79,6 @@
 		    <input type="radio" name="flow" id="flow" value=False checked> Off
 		  </label>
 		</div>	
-		{% endif %}	
 		<p>&nbsp;<br>
 		<div class="btn-group btn-group-toggle" data-toggle="buttons">
 		  <label class="btn btn-secondary active" >

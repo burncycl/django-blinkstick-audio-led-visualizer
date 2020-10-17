@@ -2,11 +2,6 @@
 
 # This will start bsvapp in Production mode (i.e. with uwsgi support for Nginx).
 
-# Start Pulseaudio
-killall pulseaudio
-sleep 1
-pulseaudio --start --verbose
-
 # Switch to project directory and start uwsgi server.
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd ${DIR}/bsv

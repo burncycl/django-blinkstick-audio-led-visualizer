@@ -144,8 +144,8 @@ class BlinkStickViz:
             sys.exit(1)        
         
         # Time between announcements based on whether we've been acknowledged.
-        short_announce_interval = 2
-        long_announce_interval = 30
+        short_announce_interval = 1
+        long_announce_interval = 10
 
         while 1:
             if self.acknowledged == True: # If we've been acknowledged, stop announcing.
