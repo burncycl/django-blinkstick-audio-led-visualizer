@@ -17,4 +17,3 @@ python3 manage.py startapp bsvapp
 ```
 source ./init.sh
 ``` 
-
