@@ -28,7 +28,7 @@ DEBUG = False
 
 # Default Network Interface
 IF_FACE = 'wlan0'
-my_ip = ni.ifaddresses(self.network_interface)[ni.AF_INET][0]['addr']
+my_ip = ni.ifaddresses(IF_FACE)[ni.AF_INET][0]['addr']
 ALLOWED_HOSTS = [my_ip,] 
 
 # Application definition
