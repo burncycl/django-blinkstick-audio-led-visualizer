@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 import os
-from socket import gethostname, gethostbyname
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,8 +25,10 @@ SECRET_KEY = 'loz^pj#_ws=l(se+&+b35ao%9z-x8#83=1-#0je-!(%uco42!)' # I know this 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = [ gethostname(), gethostbyname(gethostname()), ] 
-
+# Default Network Interface
+IF_FACE = 'wlan0'
+my_ip = ni.ifaddresses(self.network_interface)[ni.AF_INET][0]['addr']
+ALLOWED_HOSTS = [my_ip,] 
 
 # Application definition
 
@@ -131,6 +132,3 @@ CELERY_ALWAYS_EAGER = False
 # Clear Queue
 from .celery import app
 app.control.purge()
-
-# Default Network Interface
-IF_FACE = 'wlan0'
