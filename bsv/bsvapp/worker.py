@@ -14,7 +14,7 @@ def add(x, y):
 @task(name="visualizer", serializer='json')
 def start_visualizer(minimum, maximum, modes):
     BlinkStickViz(sensitivity=1.3, rate=44100, chunk=1024, channels=2, max_int=maximum, min_int=minimum, transmit=True, 
-            receive=False, network_interface=settings.IF_FACE, inputonly=False, led_count=32, device=None).main(modes=modes) 
+            receive=False, network_interface=settings.IF_FACE, inputonly=settings.INPUT_ONLY, led_count=32, device=None).main(modes=modes) 
 
 @task(name="start_rotating_rainbow", serializer='json')
 def start_rotating_rainbow():

@@ -133,3 +133,7 @@ CELERY_ALWAYS_EAGER = False
 # Clear Queue
 from .celery import app
 app.control.purge()
+
+# Input only (microphone only)
+INPUT_ONLY = True
+INPUT_ONLY=True
