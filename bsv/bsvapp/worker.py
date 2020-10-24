@@ -62,7 +62,7 @@ def start_stars():
 
 @task(name="start_custom_color_mode", serializer='json')
 def start_custom_color_mode(mode, colors, duration, blink_duration, flow, lerp, brightness):
-    BlinkStickColors(transmit=True, network_interface=settings.IF_FACE).custom_color_mode(mode, colors, duration, blink_duration, flow, lerp, brightness)
+    BlinkStickColors(transmit=True, network_interface=settings.IF_FACE, inputonly=settings.INPUT_ONLY).custom_color_mode(mode, colors, duration, blink_duration, flow, lerp, brightness)
 
 @task(name="start_clear", serializer='json')
 def start_clear():
