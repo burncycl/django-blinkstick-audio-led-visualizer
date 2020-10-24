@@ -136,4 +136,3 @@ app.control.purge()
 
 # Input only (microphone only)
 INPUT_ONLY = True
-INPUT_ONLY=True

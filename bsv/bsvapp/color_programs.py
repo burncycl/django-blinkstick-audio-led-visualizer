@@ -23,6 +23,7 @@ class BlinkStickColors:
         self.auto_discovery_port = 50000
         self.net_identifier = "blinkstickviz" # Identifier to insure we only talk to compatible devices. 
         self.inputonly = inputonly
+        print(inputonly)
         self.transmit = transmit
         self.receive_address = '0.0.0.0' # Hard-coded bind to 0.0.0.0 interface. This may need to be adjusted?
         self.receive_port = 12000 # Hard-coded UDP receive/listener port. Adjust this if needed. Didn't bother to make it configurable.
