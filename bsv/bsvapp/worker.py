@@ -18,47 +18,47 @@ def start_visualizer(minimum, maximum, modes):
 
 @task(name="start_rotating_rainbow", serializer='json')
 def start_rotating_rainbow():
-    BlinkStickColors(transmit=True, network_interface=settings.IF_FACE).rotating_rainbow()    
+    BlinkStickColors(transmit=True, network_interface=settings.IF_FACE, inputonly=settings.INPUT_ONLY).rotating_rainbow()    
 
 @task(name="start_rainbow_snake", serializer='json')
 def start_rainbow_snake():
-    BlinkStickColors(transmit=True, network_interface=settings.IF_FACE).rainbow_snake()
+    BlinkStickColors(transmit=True, network_interface=settings.IF_FACE, inputonly=settings.INPUT_ONLY).rainbow_snake()
 
 @task(name="start_breathing", serializer='json')
 def start_breathing():
-    BlinkStickColors(transmit=True, network_interface=settings.IF_FACE).breathing()
+    BlinkStickColors(transmit=True, network_interface=settings.IF_FACE, inputonly=settings.INPUT_ONLY).breathing()
 
 @task(name="start_snow_storm", serializer='json')
 def start_snow_storm():
-    BlinkStickColors(transmit=True, network_interface=settings.IF_FACE).storm(snow=True)
+    BlinkStickColors(transmit=True, network_interface=settings.IF_FACE, inputonly=settings.INPUT_ONLY).storm(snow=True)
 
 @task(name="start_rain_storm", serializer='json')
 def start_rain_storm():
-    BlinkStickColors(transmit=True, network_interface=settings.IF_FACE).storm(snow=False)
+    BlinkStickColors(transmit=True, network_interface=settings.IF_FACE, inputonly=settings.INPUT_ONLY).storm(snow=False)
 
 @task(name="start_fire_flies", serializer='json')
 def start_fire_flies():
-    BlinkStickColors(transmit=True, network_interface=settings.IF_FACE).fire_flies()
+    BlinkStickColors(transmit=True, network_interface=settings.IF_FACE, inputonly=settings.INPUT_ONLY).fire_flies()
 
 @task(name="start_fire", serializer='json')
 def start_fire():
-    BlinkStickColors(transmit=True, network_interface=settings.IF_FACE).fire()
+    BlinkStickColors(transmit=True, network_interface=settings.IF_FACE, inputonly=settings.INPUT_ONLY).fire()
 
 @task(name="start_stripes", serializer='json')
 def start_stripes():
-    BlinkStickColors(transmit=True, network_interface=settings.IF_FACE).stripes()
+    BlinkStickColors(transmit=True, network_interface=settings.IF_FACE, inputonly=settings.INPUT_ONLY).stripes()
 
 @task(name="start_clear_sky", serializer='json')
 def start_clear_sky():
-    BlinkStickColors(transmit=True, network_interface=settings.IF_FACE).sky(sunny=True, cloudy=False)
+    BlinkStickColors(transmit=True, network_interface=settings.IF_FACE, inputonly=settings.INPUT_ONLY).sky(sunny=True, cloudy=False)
 
 @task(name="start_cloudy_sky", serializer='json')
 def start_cloudy_sky():
-    BlinkStickColors(transmit=True, network_interface=settings.IF_FACE).sky(sunny=True, cloudy=True)
+    BlinkStickColors(transmit=True, network_interface=settings.IF_FACE, inputonly=settings.INPUT_ONLY).sky(sunny=True, cloudy=True)
 
 @task(name="start_stars", serializer='json')
 def start_stars():
-    BlinkStickColors(transmit=True, network_interface=settings.IF_FACE).stars()
+    BlinkStickColors(transmit=True, network_interface=settings.IF_FACE, inputonly=settings.INPUT_ONLY).stars()
 
 @task(name="start_custom_color_mode", serializer='json')
 def start_custom_color_mode(mode, colors, duration, blink_duration, flow, lerp, brightness):
