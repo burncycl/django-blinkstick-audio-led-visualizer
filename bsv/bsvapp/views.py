@@ -62,7 +62,8 @@ def music_modes(request):
             #print(all_modes, flash, pulse, loop, minimum, maximum) # Debugging
             
             # Handle visualization options and errors.
-            if all_modes == False and flash == False and pulse == False and loop == False:                 
+            if all_modes == False and flash == False and pulse == False and loop == False:
+                stop_celery_tasks()
                 messages.error(request, 'ERROR - All visualization options Off.', extra_tags='alert-danger')
                 return redirect('music_modes')
             if flash == False and pulse == False and loop == True:
