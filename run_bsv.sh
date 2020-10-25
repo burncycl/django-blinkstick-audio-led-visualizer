@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Starts Django in development node on screen process.
+
 SCRIPT_PATH="$( cd "$(dirname "$0")" ; pwd -P )"
 PROCESS_ID=`ps -ef|egrep SCREEN|egrep audit|awk '{print $2}'`
 SCREEN=`which screen`
