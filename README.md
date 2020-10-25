@@ -1,3 +1,18 @@
+### 2020/10 BuRnCycL
+
+**Blinkstick Audio LED Visualizer and Color Controls**
+
+Original Code References (Will Yager & Different55 <burritosaur@protonmail.com>):
+ - https://gitgud.io/diff-blinkstick/blinkpulse-visualizer/
+ - https://gitgud.io/diff-blinkstick/blinkflash
+ - http://yager.io/LEDStrip/LED.html
+ - https://github.com/wyager/LEDStrip
+
+### About
+
+This app works in conjunction with https://github.com/burncycl/blinkstick-audio-led-visualizer
+
+It gives a Web Interface to Control LED Visualizations.
 
 ### Ansible Automated Installation (use this for Production mode install)
 
@@ -8,6 +23,12 @@ Want to provision a fleet of Raspberry Pi's with Django Blinkstick App transmitt
 ```
 make bsvapp
 ```
+
+NOTE: If you don't want to use Ansible, and want to run in Production mode, you'll need  to pilfer the blinkstickviz.service startup script from the Ansible repo.
+
+Reference: https://github.com/burncycl/ansible-blinkstick-audio-led-visualizer/blob/master/roles/django-blinkstickviz/files/blinkstickviz.service
+
+Install in `/etc/systemd/system/blinkstickviz.service` daemon-reload, enable.
 
 ### Semi-Automated Installation
 
