@@ -17,16 +17,6 @@
 	<form class="form-inline my-2 my-lg-0" method="POST">
 	{% csrf_token %}
 	<center>
-	{% if all_modes == True %}
-	<div class="btn-group btn-group-toggle" data-toggle="buttons">
-	  <label class="btn btn-secondary active" >
-	    <input type="radio" name="all_modes" id="all_modes" value=True checked> All
-	  </label>
-	  <label class="btn btn-secondary">
-	    <input type="radio" name="all_modes" id="all_modes" value=False > Off
-	  </label>
-	</div>
-	{% else %}
 	<div class="btn-group btn-group-toggle" data-toggle="buttons">
 	  <label class="btn btn-secondary">
 	    <input type="radio" name="all_modes" id="all_modes" value=True> All
@@ -35,20 +25,9 @@
 	    <input type="radio" name="all_modes" id="all_modes" value=False checked> Off
 	  </label>
 	</div>
-	{% endif %}
 	<br>
 	<font size="2">Takes Precedence over other modes</font>
 	<p>&nbsp;<br>	
-	{% if flash == True %}
-	<div class="btn-group btn-group-toggle" data-toggle="buttons">
-	  <label class="btn btn-secondary active" >
-	    <input type="radio" name="flash" id="flash" value=True checked> Flash
-	  </label>
-	  <label class="btn btn-secondary">
-	    <input type="radio" name="flash" id="flash" value=False > Off
-	  </label>
-	</div>
-	{% else %}
 	<div class="btn-group btn-group-toggle" data-toggle="buttons">
 	  <label class="btn btn-secondary">
 	    <input type="radio" name="flash" id="flash" value=True> Flash
@@ -57,18 +36,7 @@
 	    <input type="radio" name="flash" id="flash" value=False checked> Off
 	  </label>
 	</div>
-	{% endif %}
 	<p>&nbsp;<br>
-	{% if pulse == True %}
-	<div class="btn-group btn-group-toggle" data-toggle="buttons">
-	  <label class="btn btn-secondary active" >
-	    <input type="radio" name="pulse" id="pulse" value=True checked> Pulse
-	  </label>
-	  <label class="btn btn-secondary">
-	    <input type="radio" name="pulse" id="pulse" value=False > Off
-	  </label>
-	</div>
-	{% else %}
 	<div class="btn-group btn-group-toggle" data-toggle="buttons">
 	  <label class="btn btn-secondary">
 	    <input type="radio" name="pulse" id="pulse" value=True> Pulse
@@ -77,18 +45,7 @@
 	    <input type="radio" name="pulse" id="pulse" value=False checked> Off
 	  </label>
 	</div>
-	{% endif %}
 	<p>&nbsp;<br>
-	{% if loop == True %}
-	<div class="btn-group btn-group-toggle" data-toggle="buttons">
-	  <label class="btn btn-secondary active" >
-	    <input type="radio" name="loop" id="loop" value=True checked> Loop
-	  </label>
-	  <label class="btn btn-secondary">
-	    <input type="radio" name="loop" id="loop" value=False > Off
-	  </label>
-	</div>
-	{% else %}
 	<div class="btn-group btn-group-toggle" data-toggle="buttons">
 	  <label class="btn btn-secondary">
 	    <input type="radio" name="loop" id="loop" value=True> Loop
@@ -97,7 +54,6 @@
 	    <input type="radio" name="loop" id="loop" value=False checked> Off
 	  </label>
 	</div>
-	{% endif %}
 	<p>&nbsp;<br>
 	<div class="row row-centered">
 	<span class="btn btn-secondary btn-sm">Min</span><select class="form-control form-control-sm" name="minimum" style="width: 70px !important; min-width: 70px; max-width: 70px;">
