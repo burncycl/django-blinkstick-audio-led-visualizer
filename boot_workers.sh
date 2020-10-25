@@ -12,4 +12,3 @@ cd ./${APP}
 
 celery -A ${APP} purge -f
 celery -A ${APP} worker --loglevel=INFO --pool=prefork --concurrency=1 -n worker1@%h &
-celery -A ${APP} worker --loglevel=INFO --pool=prefork --concurrency=1 -n worker2@%h &

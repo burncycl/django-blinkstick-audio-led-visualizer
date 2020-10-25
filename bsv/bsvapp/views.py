@@ -10,23 +10,22 @@ from .forms import ColorModesForm
 from .forms import ColorProgramsForm
 # Modules
 from .worker import * # Utilizes Celery workers to delegate multiprocessing tasks.
-import signal
+# External Dependencies
+from time import sleep
+
 
 # Celery Task Management
 celery_tasks = []
 def stop_celery_tasks():    
     if len(celery_tasks) > 0: # Stop Celery tasks if any are running.
-        count = 0
-        while count >= 5:
-            count += 1
-            for celery_task in celery_tasks:
-                try:
-                    print('Terminating Celery Task: {}'.format(celery_task))
-                    celery_task.revoke(terminate=True, signal=signal.SIGKILL)
-                except Exception as e:
-                    print(e)
         for celery_task in celery_tasks:
-            celery_tasks.remove(celery_task)
+            try:
+                print('Terminating Celery Task: {}'.format(celery_task))
+                celery_task.revoke(terminate=True, signal='SIGKILL')
+                sleep(1)
+                celery_tasks.remove(celery_task)
+            except Exception as e:
+                print(e)
 
 # Views
 def home(request):
