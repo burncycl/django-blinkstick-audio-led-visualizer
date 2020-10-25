@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Script designed to work with Celery 5.0.0
 # Starts worker node. Important to only use one worker node, as the code doesn't play nice with multiple.
+# Script designed to work with Celery 5.0.0
 
 # Kill off previous running workers (if any).
 ps auxww | grep 'celery -A' | awk '{print $2}' | xargs kill 2&> /dev/null

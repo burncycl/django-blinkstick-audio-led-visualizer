@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Script designed to work with Celery 5.0.0
+# Kills celery workers.
 
 APP="bsv"
 cd ./${APP}

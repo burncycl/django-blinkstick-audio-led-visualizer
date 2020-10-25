@@ -1,6 +1,7 @@
 #!/bin/bash
 
-# This will start bsvapp in Production mode (i.e. with uwsgi support for Nginx).
+# Starts bsvapp in Production mode (i.e. with uwsgi support for Nginx).
+# Works in conjunction with boot_workers.sh and pulseaudio. Best run from systemd service /etc/systemd/system/blinkstickviz.service
 
 # Switch to project directory and start uwsgi server.
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"

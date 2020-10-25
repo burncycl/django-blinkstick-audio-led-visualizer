@@ -1,19 +1,63 @@
+### 2020/10 BuRnCycL
 
-### Prerequisites
+**Blinkstick Audio LED Visualizer and Color Controls**
+
+Original Code References (Will Yager & Different55 <burritosaur@protonmail.com>):
+ - https://gitgud.io/diff-blinkstick/blinkpulse-visualizer/
+ - https://gitgud.io/diff-blinkstick/blinkflash
+ - http://yager.io/LEDStrip/LED.html
+ - https://github.com/wyager/LEDStrip
+
+### About
+
+This app works in conjunction with https://github.com/burncycl/blinkstick-audio-led-visualizer
+
+It gives a Web Interface to Control LED Visualizations.
+
+### Ansible Automated Installation (use this for Production mode install)
+
+Want to provision a fleet of Raspberry Pi's with Django Blinkstick App transmitting via network? DevOps to the rescue.
+
+* Reference: https://github.com/burncycl/ansible-blinkstick-audio-led-visualizer
+
 ```
-sudo apt install redis-server
+make bsvapp
 ```
 
-### Bootstrapping Django for the first time.
+NOTE: If you don't want to use Ansible, and want to run in Production mode, you'll need  to pilfer the blinkstickviz.service startup script from the Ansible repo.
 
-Inside a blank repository
+Reference: https://github.com/burncycl/ansible-blinkstick-audio-led-visualizer/blob/master/roles/django-blinkstickviz/files/blinkstickviz.service
+
+Install in `/etc/systemd/system/blinkstickviz.service` daemon-reload, enable.
+
+### Semi-Automated Installation
+
+#### Prerequisites
 ```
-django-admin.py startproject bsv 
-cd ./bsv
-python3 manage.py startapp bsvapp
+sudo ./install.sh 
 ```
 
-### Enable Virtual Environment + Development Mode
+#### Enable Virtual Environment + Development Mode
 ```
 source ./init.sh
 ``` 
+Will start pulseaudio
+
+#### Start Django in Development mode.
+
+Starts Celery worker(s) and Django in Development mode
+```
+./boot_workers.sh
+./start.sh
+```
+
+### Starting from scratch
+
+#### Bootstrapping Django for the first time.
+
+Inside a blank repository
+```
+django-admin.py startproject bsv
+cd ./bsv
+python3 manage.py startapp bsvapp
+```
