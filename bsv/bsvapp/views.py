@@ -9,7 +9,7 @@ from .forms import MusicModesForm
 from .forms import ColorModesForm
 from .forms import ColorProgramsForm
 # Modules
-from .worker import * # Utilizes Celery workers to delegate multiprocessing tasks.
+from .tasks import * # Utilizes Celery workers to delegate multiprocessing tasks.
 # External Dependencies
 from time import sleep
 
