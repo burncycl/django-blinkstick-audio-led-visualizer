@@ -10,19 +10,23 @@ from .forms import ColorModesForm
 from .forms import ColorProgramsForm
 # Modules
 from .worker import * # Utilizes Celery workers to delegate multiprocessing tasks.
-
+import signal
 
 # Celery Task Management
 celery_tasks = []
 def stop_celery_tasks():    
     if len(celery_tasks) > 0: # Stop Celery tasks if any are running.
+        count = 0
+        while count >= 5:
+            count += 1
+            for celery_task in celery_tasks:
+                try:
+                    print('Terminating Celery Task: {}'.format(celery_task))
+                    celery_task.revoke(terminate=True, signal=signal.SIGKILL)
+                except Exception as e:
+                    print(e)
         for celery_task in celery_tasks:
-            try:
-                print('Terminating Celery Task: {}'.format(celery_task))
-                celery_task.revoke(terminate=True)
-                celery_tasks.remove(celery_task)
-            except Exception as e:
-                print(e)
+            celery_tasks.remove(celery_task)
 
 # Views
 def home(request):
@@ -56,7 +60,7 @@ def music_modes(request):
             loop = cd.get('loop')
             minimum = cd.get('minimum')
             maximum = cd.get('maximum')
-            print(all_modes, flash, pulse, loop, minimum, maximum) # Debugging
+            #print(all_modes, flash, pulse, loop, minimum, maximum) # Debugging
             
             # Handle visualization options and errors.
             if all_modes == False and flash == False and pulse == False and loop == False:                 
@@ -321,7 +325,7 @@ def off(request):
     if request.method == 'GET':
         stop_celery_tasks()
         t = start_clear.delay()    
-        celery_tasks.append(t)    
+        celery_tasks.append(t)  
         return redirect('home')   
 
 def celery_stop(request):

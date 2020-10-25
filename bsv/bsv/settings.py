@@ -134,5 +134,5 @@ CELERY_ALWAYS_EAGER = False
 from .celery import app
 app.control.purge()
 
-# Input only (microphone only)
+# Input only (True = microphone only, False = Utilizes attached blinksticks.)
 INPUT_ONLY = True

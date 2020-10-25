@@ -10,6 +10,7 @@ from threading import Thread
 import netifaces as ni
 from webcolors import hex_to_rgb
 
+
 class BlinkStickColors:
     def __init__(self, transmit, network_interface, inputonly):        
         self.data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
@@ -18,12 +19,13 @@ class BlinkStickColors:
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] # Start data is OFF. This will get continuously updated with last color displayed in morph flow.
         self.led_count = 32 # LED count defaults to 32. Will be determined by self.get_blinksticks() if otherwise. Tune when using Input Only mode.  
-        self.sticks = self.get_blinksticks() # Discover Blinkstick Device.
+        self.inputonly = inputonly
+        print(self.inputonly)
+        if self.inputonly == False: # Facilitates bypassing Blinkstick device, and handling input only device.    
+            self.sticks = self.get_blinksticks() # Discover Blinkstick Device.        
         self.network_interface = network_interface
         self.auto_discovery_port = 50000
         self.net_identifier = "blinkstickviz" # Identifier to insure we only talk to compatible devices. 
-        self.inputonly = inputonly
-        print(inputonly)
         self.transmit = transmit
         self.receive_address = '0.0.0.0' # Hard-coded bind to 0.0.0.0 interface. This may need to be adjusted?
         self.receive_port = 12000 # Hard-coded UDP receive/listener port. Adjust this if needed. Didn't bother to make it configurable.
