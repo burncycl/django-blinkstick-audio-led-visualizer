@@ -6,7 +6,7 @@
 # Functions
 start_pulseaudio () {
 	echo "Starting Pulseaudio..."
-	pulseaudio --start --verbose
+	pulseaudio --start --verbose &
 }
 
 while true; do
