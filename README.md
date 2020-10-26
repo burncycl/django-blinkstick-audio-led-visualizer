@@ -61,3 +61,6 @@ django-admin.py startproject bsv
 cd ./bsv
 python3 manage.py startapp bsvapp
 ```
+
+### TODO
+There is redundant networking code in the color_programs and visualizer. I need to break this out into its' own class, and then refactor the aforementioned modules.  
