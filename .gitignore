@@ -1,2 +1,3 @@
 *venv
 *.pyc
+bsv/receive_nodes.list
