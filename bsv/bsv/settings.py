@@ -135,4 +135,4 @@ from .celery import app
 app.control.purge()
 
 # Input only (True = microphone only, False = Utilizes attached blinksticks.)
-INPUT_ONLY = True
+INPUT_ONLY = False
