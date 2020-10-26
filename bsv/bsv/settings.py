@@ -135,4 +135,4 @@ from .celery import app
 app.control.purge()
 
 # Input only (True = microphone only, False = Utilizes attached blinksticks). Warning: INPUT_ONLY = False could affect stability on Raspberry Pi devices.
-INPUT_ONLY = False
+INPUT_ONLY = True
