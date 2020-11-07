@@ -62,5 +62,18 @@ cd ./bsv
 python3 manage.py startapp bsvapp
 ```
 
+### Important Setting
+By default, the django application is in INPUT only mode. Updates downloaded via the internet will overwrite this setting.  
+
+This setting increases stability.
+
+Reference: https://github.com/burncycl/django-blinkstick-audio-led-visualizer/blob/master/bsv/bsv/settings.py#L138
+
+```
+# Input only (True = microphone only, False = Utilizes attached blinksticks). Warning: INPUT_ONLY = False could affect stability on Raspberry Pi devices.
+INPUT_ONLY = True
+```
+
+
 ### TODO
 There is redundant networking code in the color_programs and visualizer. I need to break this out into its' own class, and then refactor the aforementioned modules.  
