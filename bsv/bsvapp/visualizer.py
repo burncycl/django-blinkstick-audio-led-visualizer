@@ -80,7 +80,6 @@ class BlinkStickViz:
                 self.led_count = int(count)
         else:
             print('ERROR - LED Count is NOT equal between Blinksticks: {} - Values should match.'.format(led_count))
-            sys.exit(1)
         return(found_blinksticks)
 
     def input_device(self): # i.e. Microphone
@@ -136,12 +135,10 @@ class BlinkStickViz:
             announce_socket.setsockopt(SOL_SOCKET, SO_BROADCAST, 1) # Broadcast socket.
         except Exception as e:
             print('ERROR - Unable to bind to address - {}'.format(e))
-            sys.exit(1)
         try:
             my_ip = ni.ifaddresses(self.network_interface)[ni.AF_INET][0]['addr']
         except Exception as e:
-            print('ERROR - Problem with Network Interface. Perhaps you did not define the proper NIC? (Default: eth0)')
-            sys.exit(1)        
+            print('ERROR - Problem with Network Interface. Perhaps you did not define the proper NIC? (Default: eth0)')        
         
         # Time between announcements based on whether we've been acknowledged.
         short_announce_interval = 1
@@ -193,7 +190,6 @@ class BlinkStickViz:
                 transmit_socket.sendto(data,(receive_node, self.receive_port))
             except Exception as e:
                 print('ERROR - Unable to communicate to Receive Node: {} - {}'.format(receive_node, e))
-                sys.exit(1)
 
     def udp_receive_handler(self):
         Thread(target=self.udp_receive).start() # UDP Receive Mode data on separate thread.
@@ -207,7 +203,6 @@ class BlinkStickViz:
             receive_socket.bind((self.receive_address, self.receive_port))
         except Exception as e:
             print('ERROR - Unable to bind to address - {}'.format(e))
-            sys.exit(1)
              
         while 1:
             data = receive_socket.recv(self.chunk)
